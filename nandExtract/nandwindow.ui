@@ -18,17 +18,17 @@
     <property name="spacing">
      <number>0</number>
     </property>
-    <property name="margin">
+    <property name="margin" stdset="0">
      <number>2</number>
     </property>
     <item>
      <widget class="QSplitter" name="splitter">
       <property name="orientation">
-       <enum>Qt::Vertical</enum>
+       <enum>Qt::Orientation::Vertical</enum>
       </property>
       <widget class="QTreeWidget" name="treeWidget">
        <property name="contextMenuPolicy">
-        <enum>Qt::CustomContextMenu</enum>
+        <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
        </property>
        <column>
         <property name="text">
@@ -73,19 +73,16 @@
       </widget>
       <widget class="QGraphicsView" name="graphicsView_blocks">
        <property name="verticalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOn</enum>
+        <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
        </property>
        <property name="interactive">
         <bool>false</bool>
        </property>
        <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-       </property>
-       <property name="renderHints">
-        <set>QPainter::HighQualityAntialiasing|QPainter::SmoothPixmapTransform|QPainter::TextAntialiasing</set>
+        <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
        </property>
        <property name="cacheMode">
-        <set>QGraphicsView::CacheBackground</set>
+        <set>QGraphicsView::CacheModeFlag::CacheBackground</set>
        </property>
       </widget>
      </widget>
@@ -111,7 +108,7 @@
      <x>0</x>
      <y>0</y>
      <width>1180</width>
-     <height>27</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -142,7 +139,7 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionOpen_Nand">
    <property name="text">
-    <string>Open Nand...</string>
+    <string>&amp;Open Nand...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
@@ -156,7 +153,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Show Usage...</string>
+    <string>&amp;Show Usage...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+U</string>
@@ -164,7 +161,7 @@
   </action>
   <action name="actionBoot2">
    <property name="text">
-    <string>Boot2</string>
+    <string>&amp;Boot2</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+B</string>
@@ -175,7 +172,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Fix Names For FAT</string>
+    <string>&amp;Fix Names For FAT</string>
    </property>
   </action>
  </widget>

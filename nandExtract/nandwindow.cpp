@@ -7,7 +7,7 @@ NandWindow::NandWindow( QWidget *parent ) : QMainWindow( parent ), ui( new Ui::N
 {
     ui->setupUi( this );
     ui->mainToolBar->setVisible( false );
-    this->setWindowTitle( "NAND Extract   r" );
+    this->setWindowTitle( "NAND Extract" );
 
     //setup the block map
     SetUpBlockMap();
@@ -19,14 +19,14 @@ NandWindow::NandWindow( QWidget *parent ) : QMainWindow( parent ), ui( new Ui::N
     LoadSettings();
 
     QFontMetrics fm( fontMetrics() );
-    ui->treeWidget->header()->resizeSection( 0, fm.width( QString( 22, 'W' ) ) );//name
-    ui->treeWidget->header()->resizeSection( 1, fm.width( "WWWWW" ) );//entry #
-    ui->treeWidget->header()->resizeSection( 2, fm.width( "WWWWW" ) );//size
-    ui->treeWidget->header()->resizeSection( 3, fm.width( "WWWWWWWWW" ) );//uid
-    ui->treeWidget->header()->resizeSection( 4, fm.width( "WWWWWWWWW" ) );//gid
-    ui->treeWidget->header()->resizeSection( 5, fm.width( "WWWWWWWWW" ) );//x3
-    ui->treeWidget->header()->resizeSection( 6, fm.width( "WWWWW" ) );//mode
-    ui->treeWidget->header()->resizeSection( 7, fm.width( "WWWWW" ) );//attr
+    ui->treeWidget->header()->resizeSection( 0, fm.horizontalAdvance( QString( 22, 'W' ) ) );//name
+    ui->treeWidget->header()->resizeSection( 1, fm.horizontalAdvance( "WWWWW" ) );//entry #
+    ui->treeWidget->header()->resizeSection( 2, fm.horizontalAdvance( "WWWWW" ) );//size
+    ui->treeWidget->header()->resizeSection( 3, fm.horizontalAdvance( "WWWWWWWWW" ) );//uid
+    ui->treeWidget->header()->resizeSection( 4, fm.horizontalAdvance( "WWWWWWWWW" ) );//gid
+    ui->treeWidget->header()->resizeSection( 5, fm.horizontalAdvance( "WWWWWWWWW" ) );//x3
+    ui->treeWidget->header()->resizeSection( 6, fm.horizontalAdvance( "WWWWW" ) );//mode
+    ui->treeWidget->header()->resizeSection( 7, fm.horizontalAdvance( "WWWWW" ) );//attr
 
     connect( &nThread, SIGNAL( SendError( QString ) ), this, SLOT( GetError( QString ) ) );
     connect( &nThread, SIGNAL( SendText( QString ) ), this, SLOT( GetStatusUpdate( QString ) ) );
@@ -264,7 +264,7 @@ void NandWindow::GetBlocksfromNand()
     quint32 freeSpace = 0;
 
     QList<quint16> clusters = nThread.GetFats();
-    if( !clusters.size() == 0x8000 )
+    if( !(clusters.size() == 0x8000) )
     {
         QMessageBox::warning( this, tr( "Error" ), tr( "Expected 0x8000 clusters from the nand, but got %1 instead!" ).arg( clusters.size(), 0, 16 ), QMessageBox::Ok );
         return;
@@ -318,7 +318,7 @@ void NandWindow::DrawBlockMap( QList<quint16> newFile )
 {
     if( blocks.size() != 0x1000 )
     {
-        qWarning() << "NandWindow::DrawBlockMap -> current blocks are fucked up, son" << hex << blocks.size();
+        qWarning() << "NandWindow::DrawBlockMap -> current blocks are fucked up, son" << Qt::hex << blocks.size();
         return;
     }
     QPixmap blue( ":/blue.png" );

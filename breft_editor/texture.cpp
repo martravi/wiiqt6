@@ -465,7 +465,7 @@ QImage ConvertTextureToImage( const QByteArray &ba, quint32 w, quint32 h, quint3
 		ret = TPL_ConvertCMPToBitMap( (quint8*)ba.constData(), &bitmapdata, w, h );
 		break;
 	default:
-		qWarning() << "ConvertTextureToImage -> Unsupported format" << hex << format;
+        qWarning() << "ConvertTextureToImage -> Unsupported format" << Qt::hex << format;
 		return QImage();
 		break;
 	}
