@@ -93,7 +93,7 @@ void PrintColoredString( const char *msg, int highlite )
     else
     {
         QString str( msg );
-        QStringList list = str.split( "\n", QString::SkipEmptyParts );
+        QStringList list = str.split( "\n", Qt::SkipEmptyParts );
         foreach( QString s, list )
         {
             QString m = s;
@@ -343,7 +343,7 @@ void CopyItemChildren( QTreeWidgetItem *item )
                     if( (quint32)stuff.size() != size )
                     {
                         DumpItem( ch );
-                        qCritical() << hex << (quint32)stuff.size() << "!=" << size;
+                        qCritical() << Qt::hex << (quint32)stuff.size() << "!=" << size;
                         Fail( "Error reading data for " + path );
                     }
                 }
@@ -385,7 +385,6 @@ int main( int argc, char *argv[] )
 
     if( args.contains( "-about", Qt::CaseInsensitive ) )
         About();
-
     if( args.size() < 3 )
         Usage();
 
