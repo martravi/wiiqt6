@@ -185,7 +185,7 @@ void fs_hmac_data( const unsigned char *data, quint32 uid, const unsigned char *
 
 QByteArray NandSpare::Get_hmac_data( const QByteArray &cluster, quint32 uid, const unsigned char *name, quint32 entry_n, quint32 x3, quint16 blk )
 {
-    //qDebug() << "NandSpare::Get_hmac_data" << hex << cluster.size() << uid << QString( QByteArray( (const char*)name, 12 ) ) << entry_n << x3 << blk;
+    //qDebug() << "NandSpare::Get_hmac_data" << Qt::hex << cluster.size() << uid << QString( QByteArray( (const char*)name, 12 ) ) << entry_n << x3 << blk;
     if( hmacKey.size() != 0x14 || cluster.size() != 0x4000 )
         return QByteArray();
 
@@ -199,10 +199,10 @@ QByteArray NandSpare::Get_hmac_data( const QByteArray &cluster, quint32 uid, con
 
 QByteArray NandSpare::Get_hmac_meta( const QByteArray &cluster, quint16 super_blk )
 {
-    //qDebug() << "NandSpare::Get_hmac_meta" << hex << super_blk;
+    //qDebug() << "NandSpare::Get_hmac_meta" << Qt::hex << super_blk;
     if( hmacKey.size() != 0x14 || cluster.size() != 0x40000 )
     {
-        //qDebug() << "NandSpare::Get_hmac_meta" << hex << hmacKey.size() << cluster.size();
+        //qDebug() << "NandSpare::Get_hmac_meta" << Qt::hex << hmacKey.size() << cluster.size();
         return QByteArray();
     }
 

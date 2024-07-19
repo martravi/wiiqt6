@@ -93,7 +93,7 @@ void NusDownloader::StartNextJob()
         //DbgJoB( currentJob );
         if( !stuff.isEmpty() )
         {
-            //qDebug() << "tmdJob.data size:" << hex << stuff.size();
+            //qDebug() << "tmdJob.data size:" << Qt::hex << stuff.size();
             //DbgJoB( currentJob );
             ReadTmdAndGetTicket( stuff );
         }
@@ -147,14 +147,14 @@ QByteArray NusDownloader::GetDataFromCache( const downloadJob &job )
     //qDebug() << "reading data from PC";
     QByteArray ret = f.readAll();
     f.close();
-    //qDebug() << "read" << hex << ret.size() << "bytes of data from" << QFileInfo( f ).absoluteFilePath();
+    //qDebug() << "read" << Qt::hex << ret.size() << "bytes of data from" << QFileInfo( f ).absoluteFilePath();
     return ret;
 }
 
 //load the tmd and try to get the ticket
 void NusDownloader::ReadTmdAndGetTicket( const QByteArray &ba )
 {
-    //qDebug() << "NusDownloader::ReadTmdAndGetTicket" << hex << ba.size();
+    //qDebug() << "NusDownloader::ReadTmdAndGetTicket" << Qt::hex << ba.size();
     curTmd = Tmd( ba );
     if( curTmd.Tid() != currentJob.tid )
     {
@@ -247,7 +247,7 @@ bool NusDownloader::SaveDataToCache( const QString &path, const QByteArray &stuf
     }
     f.flush();
     f.close();
-    //qDebug() << "saved" << hex << stuff.size() << "bytes to" << path;
+    //qDebug() << "saved" << Qt::hex << stuff.size() << "bytes to" << path;
     return true;
 }
 
@@ -291,7 +291,7 @@ void NusDownloader::GetNextItemForCurrentTitle()
     }
     //send progress about how much of this title we already have
     int prog = (int)( (float)( (float)TitleSizeDownloaded() / (float)totalTitleSize ) * 100.0f );
-    //qDebug() << "titleProg:" << hex << TitleSizeDownloaded() << totalTitleSize << prog;
+    //qDebug() << "titleProg:" << Qt::hex << TitleSizeDownloaded() << totalTitleSize << prog;
     emit SendTitleProgress( prog );
 
     downloadJob appJob = CreateJob( curTmd.Cid( alreadyHave ), alreadyHave );
@@ -379,14 +379,14 @@ bool NusDownloader::DecryptCheckHashAndAppendData( const QByteArray &encData, qu
     //so multiple objects can be decrypting titles at the same time by different objects
     AesSetKey( decKey );
 
-    //qDebug() << "NusDownloader::DecryptCheckHashAndAppendData" << hex << encData.size() << idx;
+    //qDebug() << "NusDownloader::DecryptCheckHashAndAppendData" << Qt::hex << encData.size() << idx;
     QByteArray paddedEncrypted = PaddedByteArray( encData, 0x40 );
     QByteArray decData = AesDecrypt( idx, paddedEncrypted );
     decData.resize( curTmd.Size( idx ) );
     QByteArray realHash = GetSha1( decData );
     if( realHash != curTmd.Hash( idx ) )
     {
-        qWarning() << "NusDownloader::DecryptCheckHashAndAppendData -> hash doesnt match for content" << hex << idx;
+        qWarning() << "NusDownloader::DecryptCheckHashAndAppendData -> hash doesnt match for content" << Qt::hex << idx;
         //CurrentJobErrored( tr( "Downloaded data has a different hash than expected." ) );
         hexdump( realHash );
         hexdump( curTmd.Hash( idx ) );

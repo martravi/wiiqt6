@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "newnandbin.h"
-#include "svnrev.h"
 #include "ui_mainwindow.h"
 
 #include "../WiiQt/settingtxtdialog.h"
@@ -30,10 +29,10 @@ MainWindow::MainWindow( QWidget *parent ) : QMainWindow( parent ), ui( new Ui::M
 
     //resize buttons to be same size
     QFontMetrics fm( fontMetrics() );
-    int max = fm.width( ui->pushButton_CachePathBrowse->text() );
-    max = MAX( max, fm.width( ui->pushButton_GetTitle->text() ) );
-    max = MAX( max, fm.width( ui->pushButton_initNand->text() ) );
-    max = MAX( max, fm.width( ui->pushButton_nandPath->text() ) );
+    int max = fm.horizontalAdvance( ui->pushButton_CachePathBrowse->text() );
+    max = MAX( max, fm.horizontalAdvance( ui->pushButton_GetTitle->text() ) );
+    max = MAX( max, fm.horizontalAdvance( ui->pushButton_initNand->text() ) );
+    max = MAX( max, fm.horizontalAdvance( ui->pushButton_nandPath->text() ) );
 
     max += 20;
     ui->pushButton_CachePathBrowse->setFixedWidth( max );
@@ -628,7 +627,7 @@ bool MainWindow::InstallNUSItem( NusJob job )
     quint16 cnt;
     bool deleted = false;
     QTreeWidgetItem *content;
-    if( !job.tid || !job.data.size() > 2 )
+    if( !job.tid || !(job.data.size() > 2) )
     {
         qWarning() << "bad sizes";
         ShowMessage( "<b>Error installing title " + title + " to nand</b>" );
@@ -773,7 +772,7 @@ bool MainWindow::InstallNUSItem( NusJob job )
         }
         else
         {
-            qWarning() << "type" << hex << t.Type( i );
+            qWarning() << "type" << Qt::hex << t.Type( i );
             goto error;
         }
     }
@@ -795,7 +794,7 @@ void MainWindow::on_actionAbout_triggered()
                      "<br><br>IT SHOULD ONLY BE USED BY PEOPLE THAT KNOW HOW TO VERIFY THE FILES IT PRODUCES.  AND HAVE A WAY TO FIX A BRICKED WII SHOULD THIS PROGRAM HAVE BUGS"
                      "<br><br>YOU HAVE BEEN WARNED"
                      "<br>giantpune" );
-    QMessageBox::critical( this, tr( "svn r%1" ).arg( CleanSvnStr( SVN_REV_STR ) ), txt );
+    QMessageBox::critical( this, tr( "NUS NAND Builder" ), txt );
 }
 
 #if 0
@@ -1008,7 +1007,7 @@ void MainWindow::on_actionFormat_triggered()
         tid = qFromBigEndian( tid );
         quint32 upper = ( ( tid >> 32 ) & 0xffffffff );
         quint32 lower = ( tid & 0xffffffff );
-        //qDebug() << hex << i << QString( "%1" ).arg( tid, 16, 16, QChar( '0' ) ) << upper << lower << QChar( ( lower >> 24 ) & 0xff ) << ( lower & 0xffffff00 );
+        //qDebug() << Qt::hex << i << QString( "%1" ).arg( tid, 16, 16, QChar( '0' ) ) << upper << lower << QChar( ( lower >> 24 ) & 0xff ) << ( lower & 0xffffff00 );
         if( ( upper == 0x10001 && ( ( lower >> 24 ) & 0xff ) != 0x48 ) ||		//a channel, not starting with 'H'
                 lower == 0x48415858 ||												//original HBC
                 tid == 0x100000000ull ||											//bannerbomb -> ATD ( or any other program that uses the SU tid )

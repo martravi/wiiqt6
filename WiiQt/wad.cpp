@@ -95,7 +95,7 @@ Wad::Wad( const QByteArray &stuff )
 		qWarning() << "wad contains 2 different TIDs";
 
 	quint32 cnt = t.Count();
-	//qDebug() << "Wad contains" << hex << cnt << "contents";
+    //qDebug() << "Wad contains" << Qt::hex << cnt << "contents";
 
 	//another quick sanity check
 	quint32 totalSize = 0;
@@ -112,7 +112,7 @@ Wad::Wad( const QByteArray &stuff )
 	{
 
 		quint32 s = RU( t.Size( i ), 0x40 );
-		//qDebug() << "content" << i << "is at" << hex << pos
+        //qDebug() << "content" << i << "is at" << Qt::hex << pos
 		//        << "with size" << s;
 		QByteArray encData = stuff.mid( pos, s );
 		pos += s;
@@ -338,7 +338,7 @@ void Wad::Err( const QString &str )
 
 const QByteArray Wad::Data( quint32 magicWord, const QByteArray &footer )
 {
-	//qDebug() << "Wad::Data" << hex << magicWord << footer.size();
+    //qDebug() << "Wad::Data" << Qt::hex << magicWord << footer.size();
 	if( !partsEnc.size() || tmdData.isEmpty() || tikData.isEmpty() || ( certData.isEmpty() && globalCert.isEmpty() ) )
 	{
 		Err( "Dont have all the parts to make a wad" );

@@ -12,7 +12,7 @@ bool SharedContentMap::Check( const QString &path )
 {
     if( !data.size() || data.size() % 28 )
     {
-        qWarning() << "SharedContentMap::Check -> bad size" << hex << data.size();
+        qWarning() << "SharedContentMap::Check -> bad size" << Qt::hex << data.size();
         return false;
     }
 
@@ -51,7 +51,7 @@ bool SharedContentMap::Check( const QString &path )
     {
         cid = data.mid( ( i * 28 ), 8 );
         QString appName( cid );
-        QFileInfo fi = dir.absoluteFilePath( appName + ".app" );
+        QFileInfo fi = QFileInfo(dir.absoluteFilePath( appName + ".app" ));
         if( !fi.exists() )
         {
             qWarning() << "SharedContentMap::Check -> content in the map isnt found in" << path;
@@ -110,7 +110,7 @@ QString SharedContentMap::GetNextEmptyCid()
     //find the lowest number cid that isnt used
     while( cids.contains( ret ) )
         ret++;
-    //qDebug() << hex << ret;
+    //qDebug() << Qt::hex << ret;
     return QString( "%1" ).arg( ret, 8, 16, QChar( '0' ) );
 }
 
@@ -118,7 +118,7 @@ void SharedContentMap::AddEntry( const QString &app, const QByteArray &hash )
 {
     if( app.size() != 8 || hash.size() != 20 )
     {
-        qWarning() << "SharedContentMap::AddEntry -> bas size" << hex << app.size() << hash.size();
+        qWarning() << "SharedContentMap::AddEntry -> bas size" << Qt::hex << app.size() << hash.size();
         return;
     }
     data += app.toLatin1() + hash;

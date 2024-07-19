@@ -146,7 +146,7 @@ private:
     QNetworkAccessManager manager;
     QQueue< downloadJob > downloadQueue;
     QNetworkReply *currentDownload;
-    QTime downloadTime;
+    QElapsedTimer downloadTime;
     QString currentJobText;
     downloadJob dlJob;
 

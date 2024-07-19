@@ -232,7 +232,7 @@ void NewNandBin::on_pushButton_badBlockFile_clicked()
     ui->listWidget_badBlocks->clear();
 
     str.replace( "\r\n", "\n" );
-    QStringList lines = str.split( "\n", QString::SkipEmptyParts );
+    QStringList lines = str.split( "\n", Qt::SkipEmptyParts );
     foreach( const QString &line, lines )
     {
         if( line.size() > 5 )
@@ -307,7 +307,7 @@ void NewNandBin::on_pushButton_oldNand_clicked()
     }
     QList<quint16> clusters = old.GetFats();
     QList<quint16> badBlacks;
-    if( !clusters.size() == 0x8000 )
+    if( !(clusters.size() == 0x8000) )
     {
         QMessageBox::warning( this, tr( "Error" ), \
                               tr( "Expected 0x8000 clusters from the nand, but got %1 instead!" ).arg( clusters.size(), 0, 16 ), QMessageBox::Ok );
@@ -317,13 +317,13 @@ void NewNandBin::on_pushButton_oldNand_clicked()
     }
     for( quint16 i = 0; i < 0x8000; i += 8 )//first cluster of each block.
     {
-        //qDebug() << hex << i << clusters.at( i );
+        //qDebug() << Qt::hex << i << clusters.at( i );
         if( clusters.at( i ) == 0xFFFD )
         {
             quint16 block = ( i / 8 );
             badBlacks << block;
             QString txt = QString( "%1" ).arg( block );
-            //qDebug() << "bad cluster" << hex << i << block << txt;
+            //qDebug() << "bad cluster" << Qt::hex << i << block << txt;
             //if( ui->listWidget_badBlocks->findItems( txt, Qt::MatchExactly ).isEmpty() )//just in case, but this should always be true
                 ui->listWidget_badBlocks->addItem( txt );
         }
@@ -355,7 +355,7 @@ QByteArray NewNandBin::GetCleanUid( QByteArray old )
         tid = qFromBigEndian( tid );
         quint32 upper = ( ( tid >> 32 ) & 0xffffffff );
         quint32 lower = ( tid & 0xffffffff );
-        //qDebug() << QString( "%1" ).arg( tid, 16, 16, QChar( '0' ) ) << hex << upper << lower << ( ( lower >> 24 ) & 0xff ) << ( lower & 0xffff00 );
+        //qDebug() << QString( "%1" ).arg( tid, 16, 16, QChar( '0' ) ) << Qt::hex << upper << lower << ( ( lower >> 24 ) & 0xff ) << ( lower & 0xffff00 );
         if( ( upper == 0x10001 && ( ( lower >> 24 ) & 0xff ) != 0x48 ) ||		//a channel, not starting with 'H'
             lower == 0x48415858 ||												//original HBC
             tid == 0x100000000ull ||											//bannerbomb -> ATD ( or any other program that uses the SU tid )

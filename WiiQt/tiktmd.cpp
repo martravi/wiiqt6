@@ -54,8 +54,7 @@ bool Tmd::SetIOS( quint64 ios )
 
 bool Tmd::SetAhb( bool remove )
 {
-    if( !p_tmd )
-        return false;
+    if( !p_tmd ) return false;
 
 	quint32 access = qFromBigEndian( p_tmd->access_rights );
 	if( remove )
@@ -68,8 +67,7 @@ bool Tmd::SetAhb( bool remove )
 
 bool Tmd::SetDiskAccess( bool allow )
 {
-    if( !p_tmd )
-        return false;
+    if( !p_tmd ) return false;
 
 	quint32 access = qFromBigEndian( p_tmd->access_rights );
 	if( allow )
@@ -299,7 +297,7 @@ Ticket::Ticket( const QByteArray &stuff, bool fixKeyIndex )
 			qWarning() << "Ticket::Ticket -> ticket uses the korean key. Only titles encrypted with the common key are supported";
 			return;
 		}
-		qWarning() << "Ticket::Ticket -> key index is" << hex << *keyindex << ". Setting it to 0 and fakesigning";
+        qWarning() << "Ticket::Ticket -> key index is" << Qt::hex << *keyindex << ". Setting it to 0 and fakesigning";
 
 		*keyindex = 0;//anything other than 0 or 1 is probably an error.  fix it
 		FakeSign();
@@ -316,8 +314,7 @@ quint64 Ticket::Tid()
 
 bool Ticket::SetTid( quint64 tid )
 {
-    if( !p_tik )
-        return false;
+    if( !p_tik ) return false;
 
 	p_tik->titleid = qFromBigEndian( tid );
 

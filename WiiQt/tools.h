@@ -82,9 +82,6 @@ QByteArray ReadFile( const QString &path );
 //save a file to disc
 bool WriteFile( const QString &path, const QByteArray &ba );
 
-//cleanup an svn revision string
-QString CleanSvnStr( const QString &orig );
-
 #define CERTS_DAT_SIZE 2560
 extern const quint8 certs_dat[ CERTS_DAT_SIZE ];
 extern const quint8 root_dat[];

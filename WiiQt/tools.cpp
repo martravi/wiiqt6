@@ -83,14 +83,14 @@ void hexdump12( const QByteArray &d, int from, int len )
 
 QByteArray PaddedByteArray( const QByteArray &orig, quint32 padTo )
 {
-    //qDebug() << "need to pad from" << hex << orig.size() << "to nearest" << padTo;
+    //qDebug() << "need to pad from" << Qt::hex << orig.size() << "to nearest" << padTo;
     QByteArray padding( RU( orig.size(), padTo ) - orig.size(), '\0' );
     return orig + padding;
 }
 
 QByteArray AesDecrypt( quint16 index, const QByteArray &source )
 {
-    //qDebug() << "AesDecrypt" << hex << index << source.size();
+    //qDebug() << "AesDecrypt" << Qt::hex << index << source.size();
     quint8 iv[ 16 ];
 
     quint16 beidx = qFromBigEndian( index );
@@ -192,7 +192,7 @@ bool IsValidSave( const SaveGame &save )
         }
         else		//unknown attribute
         {
-            qWarning() << "IsValidSave :unknown attribute" << i << hex << attr << NAND_ATTR_TYPE( attr );
+            qWarning() << "IsValidSave :unknown attribute" << i << Qt::hex << attr << NAND_ATTR_TYPE( attr );
             return false;
         }
 
@@ -247,21 +247,6 @@ quint8 AttrFromSave( const SaveGame &save, const QString &name )
             return save.attr.at( i );
     }
     return 0;
-}
-
-QString CleanSvnStr( const QString &orig )
-{
-    QString ret = orig;
-
-    if( ret.isEmpty() )
-        return ret;
-
-    QRegExp notNum( "[^0-9]" );
-    QStringList parts = ret.split( notNum, QString::SkipEmptyParts );
-    if( parts.size() )
-        return parts.at( parts.size() - 1 );
-
-    return ret;
 }
 
 #define CERTS_DAT_SIZE 2560
