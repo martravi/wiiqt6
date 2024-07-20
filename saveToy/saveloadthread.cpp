@@ -219,7 +219,7 @@ void SaveLoadThread::GetPCSaves()
 						continue;
 					}*/
 					QByteArray unc = file.readAll();
-					//qDebug() << "read" << hex << unc.size();
+					//qDebug() << "read" << Qt::hex << unc.size();
 					if( file.getZipError() != UNZ_OK )
 					{
 						qWarning("SaveLoadThread::GetPCSaves(): file.getFileName(): %d", file.getZipError());

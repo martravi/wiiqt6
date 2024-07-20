@@ -33,11 +33,11 @@ QByteArray DecryptAsh( const QByteArray ba )
     r[5] = r[5] & 0x00FFFFFF;
 
     quint32 size = r[5];
-    //qDebug() << "Decompressed size:" << hex << size;
+    //qDebug() << "Decompressed size:" << Qt::hex << size;
     if( size > BUFFER_SIZE )
     {
         qWarning() << "DecryptAsh(): this file was built with a buffer to small to deal with this archive.  Build it with a bigger one and try again."
-                << hex << size << ">" << BUFFER_SIZE;
+                << Qt::hex << size << ">" << BUFFER_SIZE;
         return QByteArray();
     }
 

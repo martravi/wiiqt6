@@ -121,7 +121,7 @@ bool ElfParser::ParseText( const QString &str )
 			//qDebug() << "   " << fun.Name();
 			foreach( const SymRef &ref, fun.References() )
 			{
-				//qDebug() << "      " << hex << ref.off << ref.name;
+				//qDebug() << "      " << Qt::hex << ref.off << ref.name;
 			}
 		}*/
 		/*foreach( const SymAlias &alias, f.Aliases() )
@@ -179,7 +179,7 @@ QList< SymAlias > ElfParser::ParseSymbolTable( const QStringList &lines )
 			continue;
 		}
 		ref.name = line.mid( tab + 10 );
-		//qDebug() << hex << QString( "%1" ).arg( ref.offset, 8, 16, QChar( QChar( '0' ) ) )
+		//qDebug() << Qt::hex << QString( "%1" ).arg( ref.offset, 8, 16, QChar( QChar( '0' ) ) )
 		//		 << ref.containerName
 		//		 << QString( "%1" ).arg( ref.size, 8, 16, QChar( QChar( '0' ) ) )
 		//		 << ref.name;
@@ -497,7 +497,7 @@ bool ElfParser::ParseOpLine( const QString &str, QString &hex, QString &oper )
 	if( tab < 0 || str.size() < tab + 15 || str.at( tab + 3 ) != ' '  || str.at( tab + 6 ) != ' '  || str.at( tab + 9 ) != ' '  || str.at( tab + 12 ) != ' ' )
 	{
 		qDebug() << str << "is not an opline";
-		qDebug() << hex << oper;
+		qDebug() << Qt::hex << oper;
 		return false;
 	}
 	//  "   0:	94 21 ff f0 	stwu    r1,-16(r1)"
@@ -510,7 +510,7 @@ bool ElfParser::ParseOpLine( const QString &str, QString &hex, QString &oper )
 	{
 		oper.resize( i );
 	}
-	//qDebug() << str << '\n' << hex << oper;
+	//qDebug() << str << '\n' << Qt::hex << oper;
 	//exit( 0 );
 
 	return true;

@@ -278,7 +278,7 @@ void CopyItemChildren( QTreeWidgetItem *item )
     cnt = item->childCount();
 
     attr = Attr( item );
-    //qDebug() << "CopyItemChildren()" << item->text( 0 ) << hex << attr;
+    //qDebug() << "CopyItemChildren()" << item->text( 0 ) << Qt::hex << attr;
     for( quint32 i = 0; i < cnt; i++ )
     {
         QTreeWidgetItem *ch = item->child( i );
@@ -303,7 +303,7 @@ void CopyItemChildren( QTreeWidgetItem *item )
             Fail( "error converting gid to u16" );
         }
 
-        //qDebug() << ch->text( 0 ) << hex << type << perm1 << perm2 << perm3 << uid << gid;
+        //qDebug() << ch->text( 0 ) << Qt::hex << type << perm1 << perm2 << perm3 << uid << gid;
 
         if( !testMode )
         {

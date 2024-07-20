@@ -588,7 +588,7 @@ error:
 //tools -> set ng keys
 void MainWindow::on_actionSet_NG_Keys_triggered()
 {
-    qDebug() << hex << ngID;
+    qDebug() << Qt::hex << ngID;
     NgDialog d( this );
 
     d.ngID = ngID;
@@ -608,7 +608,7 @@ void MainWindow::on_actionSet_NG_Keys_triggered()
     ngPriv = d.ngPriv;
     ngSig = d.ngSig;
 	qDebug() << "accepted";
-	//qDebug() << hex << d.ngID
+	//qDebug() << Qt::hex << d.ngID
 	//        << "\n" << d.ngKeyID
 	//        << "\n" << d.ngMac.toHex()
 	//        << "\n" << d.ngPriv.toHex()

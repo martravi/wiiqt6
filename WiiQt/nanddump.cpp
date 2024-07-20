@@ -182,7 +182,7 @@ bool NandDump::SaveData( const QByteArray &ba, const QString& path )
 {
     if( basePath.isEmpty() || !path.startsWith( "/" ) )
         return false;
-    qDebug() << "NandDump::SaveData" << path << hex << ba.size();
+    qDebug() << "NandDump::SaveData" << path << Qt::hex << ba.size();
     return WriteFile( basePath + path, ba );
 }
 
@@ -201,14 +201,14 @@ bool NandDump::InstallTicket( const QByteArray &ba, quint64 tid )
     Ticket t( ba );
     if( t.Tid() != tid )
     {
-        qWarning() << "NandDump::InstallTicket -> bad tid" << hex << tid << t.Tid();
+        qWarning() << "NandDump::InstallTicket -> bad tid" << Qt::hex << tid << t.Tid();
         return false;
     }
     //only write the first chunk of the ticket to the nand
     QByteArray start = ba.left( t.SignedSize() );
     if( start.size() != 0x2a4 )
     {
-        qWarning() << "NandDump::InstallTicket -> ticket size" << hex << start.size();
+        qWarning() << "NandDump::InstallTicket -> ticket size" << Qt::hex << start.size();
     }
     QString p = QString( "%1" ).arg( tid, 16, 16, QChar( '0' ) );
     p.insert( 8 ,"/" );
@@ -228,7 +228,7 @@ bool NandDump::InstallTmd( const QByteArray &ba, quint64 tid )
     Tmd t( ba );
     if( t.Tid() != tid )
     {
-        qWarning() << "NandDump::InstallTmd -> bad tid" << hex << tid << t.Tid();
+        qWarning() << "NandDump::InstallTmd -> bad tid" << Qt::hex << tid << t.Tid();
         return false;
     }
     //only write the first chunk of the ticket to the nand
@@ -405,7 +405,7 @@ bool NandDump::InstallNusItem( const NusJob &job )
             QByteArray realHash = GetSha1( decData );
             if( realHash != t.Hash( i ) )
             {
-                qWarning() << "NandDump::InstallNusItem -> hash doesnt match for content" << hex << i;
+                qWarning() << "NandDump::InstallNusItem -> hash doesnt match for content" << Qt::hex << i;
                 hexdump( realHash );
                 hexdump( t.Hash( i ) );
                 AbortInstalling( job.tid );
@@ -583,7 +583,7 @@ QMap< quint64, quint32 > NandDump::GetSaveList()
         quint32 upper = fi.fileName().toInt( &ok, 16 );
         if( !ok )
             continue;
-        //qDebug() << " upper" << hex << upper;
+        //qDebug() << " upper" << Qt::hex << upper;
 
         QDir sd( fi.absoluteFilePath() );//subDir
         QFileInfoList sfiL = sd.entryInfoList( QDir::Dirs | QDir::NoDotAndDotDot );//get all subfolders in this subfolder

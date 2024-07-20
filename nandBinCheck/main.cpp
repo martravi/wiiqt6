@@ -111,7 +111,7 @@ void PrintColoredString( const char *msg, int highlite )
     else
     {
         QString str( msg );
-        QStringList list = str.split( "\n", QString::SkipEmptyParts );
+        QStringList list = str.split( "\n", Qt::SkipEmptyParts );
         foreach( const QString &s, list )
         {
             QString m = s;
@@ -418,7 +418,7 @@ QList< quint64 > InstalledTitles()
             ret << tid;
         }
     }
-    qSort( ret.begin(), ret.end() );
+    std::sort( ret.begin(), ret.end() );
     return ret;
 }
 
@@ -826,9 +826,9 @@ bool CheckTitleIntegrity( quint64 tid )
         quint16 vers = t.Version();
         qDebug() << "\tversion:" << qPrintable( QString( "%1.%2" ).arg( ( vers >> 8 ) & 0xff ).arg( vers & 0xff ).leftJustified( 10 ) )
                 << qPrintable( QString( "%1" ).arg( vers ).leftJustified( 10 ) )
-                << "hex:" << hex << t.Version();
+                << "hex:" << Qt::hex << t.Version();
         if( t.AccessFlags() )
-            qDebug() << "\taccess :" << hex << t.AccessFlags();
+            qDebug() << "\taccess :" << Qt::hex << t.AccessFlags();
     }
 
     quint64 ios = t.IOS();
@@ -1020,7 +1020,7 @@ void CheckLostClusters()
 {
     QList<quint16> u = nand.GetFatsForEntry( 0 );//all clusters actually used for a file
     if( verbose )
-        qDebug() << "total used clusters" << hex << u.size() << "of 0x8000";
+        qDebug() << "total used clusters" << Qt::hex << u.size() << "of 0x8000";
     quint16 lost = 0;
     QList<quint16> ffs;
     QList<quint16> frs;
@@ -1043,11 +1043,11 @@ void CheckLostClusters()
             break;
         default:
             lost++;
-            //qDebug() << hex << i << fats.at( i );
+            //qDebug() << Qt::hex << i << fats.at( i );
             break;
         }
     }
-    qDebug() << "found" << lost << "lost clusters\nUNK ( 0xffff )" << hex << ffs.size() << ffs <<
+    qDebug() << "found" << lost << "lost clusters\nUNK ( 0xffff )" << Qt::hex << ffs.size() << ffs <<
             "\nfree           " << frs.size();
 }
 
@@ -1193,7 +1193,7 @@ void CheckSettingTxt()
     bool shownSetting = false;
     QString str( settingTxt );
     str.replace( "\r\n", "\n" );//maybe not needed to do this in 2 steps, but there may be some reason the file only uses "\n", so do it this way to be safe
-    QStringList parts = str.split( "\n", QString::SkipEmptyParts );
+    QStringList parts = str.split( "\n", Qt::SkipEmptyParts );
     foreach( const QString &part, parts )
     {
         if( part.startsWith( "AREA=" ) )

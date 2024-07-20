@@ -26,7 +26,7 @@ bool Dol::Parse(  const QByteArray &dol )
 		WRN << "!dh";
 		return false;
 	}
-	//DBG << hex << (*(dh->entrypoint));
+	//DBG << Qt::hex << (*(dh->entrypoint));
 
 	for( quint32 i = 0; i < 7; i ++ )
 	{
@@ -39,7 +39,7 @@ bool Dol::Parse(  const QByteArray &dol )
 		}
 		if( fileOff + len > (quint32) dol.size() )
 		{
-			WRN << "text section is out of range:" << i << hex << fileOff << len;
+			WRN << "text section is out of range:" << i << Qt::hex << fileOff << len;
 			continue;
 		}
 		DolSection sec;
@@ -60,7 +60,7 @@ bool Dol::Parse(  const QByteArray &dol )
 		}
 		if( fileOff + len > (quint32) dol.size() )
 		{
-			WRN << "data section is out of range:" << i << hex << fileOff << len;
+			WRN << "data section is out of range:" << i << Qt::hex << fileOff << len;
 			continue;
 		}
 		DolSection sec;

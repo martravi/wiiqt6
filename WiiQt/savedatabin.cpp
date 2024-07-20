@@ -4,7 +4,7 @@
 
 SaveDataBin::SaveDataBin( QByteArray stuff )
 {
-//    qDebug() << "SaveDataBin::SaveDataBin" << hex << stuff.size();
+//    qDebug() << "SaveDataBin::SaveDataBin" << Qt::hex << stuff.size();
     _ok = false;
     ngID = 0;
     ngKeyID = 0;
@@ -43,7 +43,7 @@ SaveDataBin::SaveDataBin( QByteArray stuff )
     ds >> bnrPerm;
     if( bnrSize < 0x72a0 || bnrSize > 0xf0a0 || ( bnrSize - 0x60a0 ) % 0x1200 )
     {
-        qWarning() << "SaveDataBin::SaveDataBin -> bad size" << hex << bnrSize;
+        qWarning() << "SaveDataBin::SaveDataBin -> bad size" << Qt::hex << bnrSize;
         return;
     }
     //add the entry for banner.bin in the save struct
@@ -67,7 +67,7 @@ SaveDataBin::SaveDataBin( QByteArray stuff )
     tmp = qFromBigEndian( tmp );
     if( tmp != 0x70 )
     {
-        qWarning() << "SaveDataBin::SaveDataBin -> bad hdr size" << hex << tmp;
+        qWarning() << "SaveDataBin::SaveDataBin -> bad hdr size" << Qt::hex << tmp;
         b.close();
         return;
     }
@@ -75,13 +75,13 @@ SaveDataBin::SaveDataBin( QByteArray stuff )
     tmp = qFromBigEndian( tmp );
     if( tmp != 0x426b0001 )
     {
-        qWarning() << "SaveDataBin::SaveDataBin -> bad magic" << hex << tmp;
+        qWarning() << "SaveDataBin::SaveDataBin -> bad magic" << Qt::hex << tmp;
         b.close();
         return;
     }
     b.read( (char*)&tmp, 4 );
     ngID = qFromBigEndian( tmp );
-    //qDebug() << "NG id:" << hex << ngID;
+    //qDebug() << "NG id:" << Qt::hex << ngID;
     b.read( (char*)&tmp, 4 );
     cnt = qFromBigEndian( tmp );
     b.read( (char*)&tmp, 4 );
@@ -89,13 +89,13 @@ SaveDataBin::SaveDataBin( QByteArray stuff )
     b.seek( b.pos() + 8 );
     b.read( (char*)&tmp, 4 );
     tSize = qFromBigEndian( tmp );
-    //qDebug() << "cnt  :" << hex << cnt;
-    //qDebug() << "fSize:" << hex << fSize;
-    //qDebug() << "tSize:" << hex << tSize << stuff.size();
+    //qDebug() << "cnt  :" << Qt::hex << cnt;
+    //qDebug() << "fSize:" << Qt::hex << fSize;
+    //qDebug() << "tSize:" << Qt::hex << tSize << stuff.size();
 
     if( (quint32)stuff.size() < fSize + 0xf140 )
     {
-        qWarning() << "SaveDataBin::SaveDataBin -> buffer size is less than expected" << hex << fSize;
+        qWarning() << "SaveDataBin::SaveDataBin -> buffer size is less than expected" << Qt::hex << fSize;
         b.close();
         return;
     }
@@ -119,7 +119,7 @@ SaveDataBin::SaveDataBin( QByteArray stuff )
         tmp = qFromBigEndian( tmp );
         if( tmp != 0x03adf17e )
         {
-            qWarning() << "SaveDataBin::SaveDataBin -> bad file magic" << hex << i << tmp;
+            qWarning() << "SaveDataBin::SaveDataBin -> bad file magic" << Qt::hex << i << tmp;
             b.close();
             return;
         }
@@ -132,7 +132,7 @@ SaveDataBin::SaveDataBin( QByteArray stuff )
         name = b.read( 0x45 );
         b.read( (char*)&iv, 0x10 );
 
-        /*qDebug() << "size:" << hex << size
+        /*qDebug() << "size:" << Qt::hex << size
                 << "perm:" << perm
                 << "attr:" << attr
                 << "type:" << type
@@ -140,7 +140,7 @@ SaveDataBin::SaveDataBin( QByteArray stuff )
                 << "iv:" << QByteArray( (const char*)iv, 0x10 ).toHex();*/
 
         perm = ( perm << 2 ) | type;
-        //qDebug() << "perm2:" << hex << perm;
+        //qDebug() << "perm2:" << Qt::hex << perm;
 
         sg.entries << "/" + name;
         sg.attr << perm;
@@ -157,14 +157,14 @@ SaveDataBin::SaveDataBin( QByteArray stuff )
                 sg.data << decData;
 
                 /*qDebug() << QString( name );
-                qDebug() << "size:" << hex << size;
+                qDebug() << "size:" << Qt::hex << size;
                 hexdump( decData, 0, 0x30 );*/
             }
             break;
         case NAND_DIR:
             break;
         default:
-            qWarning() << "SaveDataBin::SaveDataBin -> unknown type" << hex << i << type;
+            qWarning() << "SaveDataBin::SaveDataBin -> unknown type" << Qt::hex << i << type;
             return;
             break;
         }
@@ -175,18 +175,18 @@ SaveDataBin::SaveDataBin( QByteArray stuff )
 
     //get a couple keys useful for repacking
     quint32 cStart = b.pos();
-    //qDebug() << "pos:" << hex << (quint32)b.pos();
+    //qDebug() << "pos:" << Qt::hex << (quint32)b.pos();
     b.seek( b.pos() + 0x144 );
     b.read( (char*)&tmp, 4 );
     ngKeyID = qFromBigEndian( tmp );
     ngSig = stuff.mid( cStart + 0x44, 0x3c );
-    //qDebug() << "ngKeyID:" << hex << ngKeyID;
-    //qDebug() << "ngSig  :" << hex << ngSig.toHex();
+    //qDebug() << "ngKeyID:" << Qt::hex << ngKeyID;
+    //qDebug() << "ngSig  :" << Qt::hex << ngSig.toHex();
 
     //check the cert mumbojombo
     b.close();
     quint32 data_size = tSize - 0x340;
-    //qDebug() << hex << data_size << tSize;
+    //qDebug() << Qt::hex << data_size << tSize;
     QByteArray sha1H = GetSha1( stuff.mid( 0xf0c0, data_size ) );
     sha1H = GetSha1( sha1H );
 
@@ -233,7 +233,7 @@ const QByteArray SaveDataBin::Data( const QByteArray &ngPriv, const QByteArray &
                 << "\n" << ng_Sig.toHex()
                 << "\n" << ng_Mac.toHex()
                 << "\n" << ngPriv.toHex()
-                << "\n" << hex << ng_ID
+                << "\n" << Qt::hex << ng_ID
                 << "\n" << ng_Key_ID;
         return QByteArray();
     }
@@ -473,7 +473,7 @@ const QByteArray SaveDataBin::GetBanner( const QByteArray &dataBin )
     //checken der sizen
     if( bnrSize < 0x72a0 || bnrSize > 0xf0a0 || ( bnrSize - 0x60a0 ) % 0x1200 )
     {
-        qWarning() << "SaveDataBin::GetBanner -> bad size" << hex << bnrSize;
+        qWarning() << "SaveDataBin::GetBanner -> bad size" << Qt::hex << bnrSize;
         return QByteArray();
     }
     return header.mid( 0x20, bnrSize );
@@ -517,7 +517,7 @@ quint32 SaveDataBin::GetSize( QByteArray dataBin )
 
 	if( bnrSize < 0x72a0 || bnrSize > 0xf0a0 || ( bnrSize - 0x60a0 ) % 0x1200 )
 	{
-		qWarning() << "SaveDataBin::GetSize -> bad size" << hex << bnrSize;
+		qWarning() << "SaveDataBin::GetSize -> bad size" << Qt::hex << bnrSize;
 		return 0;
 	}
 	buf.close();
@@ -532,7 +532,7 @@ quint32 SaveDataBin::GetSize( QByteArray dataBin )
 	tmp = qFromBigEndian( tmp );
 	if( tmp != 0x70 )
 	{
-		qWarning() << "SaveDataBin::GetSize -> bad hdr size" << hex << tmp;
+		qWarning() << "SaveDataBin::GetSize -> bad hdr size" << Qt::hex << tmp;
 		buf.close();
 		return 0;
 	}
@@ -540,14 +540,14 @@ quint32 SaveDataBin::GetSize( QByteArray dataBin )
 	tmp = qFromBigEndian( tmp );
 	if( tmp != 0x426b0001 )
 	{
-		qWarning() << "SaveDataBin::GetSize -> bad magic" << hex << tmp;
+		qWarning() << "SaveDataBin::GetSize -> bad magic" << Qt::hex << tmp;
 		buf.close();
 		return 0;
 	}
 	buf.seek( 0xf0cc );
 	buf.read( (char*)&tmp, 4 );
 	cnt = qFromBigEndian( tmp );
-	//qDebug() << "cnt  :" << hex << cnt;
+	//qDebug() << "cnt  :" << Qt::hex << cnt;
 	buf.seek( 0xf140 );
 	ret += bnrSize;
 	for( quint32 i = 0; i < cnt; i++ )
@@ -560,7 +560,7 @@ quint32 SaveDataBin::GetSize( QByteArray dataBin )
 		tmp = qFromBigEndian( tmp );
 		if( tmp != 0x03adf17e )
 		{
-			qWarning() << "SaveDataBin::GetSize -> bad file magic" << hex << i << tmp;
+			qWarning() << "SaveDataBin::GetSize -> bad file magic" << Qt::hex << i << tmp;
 			break;
 		}
 		buf.read( (char*)&tmp, 4 );

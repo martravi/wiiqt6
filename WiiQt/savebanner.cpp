@@ -16,7 +16,7 @@ SaveBanner::SaveBanner( QByteArray stuff )
     quint32 size = f.size();
     if( size < 0x72a0 || ( ( size - 0x60a0 ) % 0x1200 )  )//sanity check the size.  must have enough data for the header, names, banner, and 1 icon image
     {
-        qDebug() << "SaveBanner::SaveBanner -> bad filesize" << hex << size;
+        qDebug() << "SaveBanner::SaveBanner -> bad filesize" << Qt::hex << size;
         f.close();
         return;
     }
@@ -26,7 +26,7 @@ SaveBanner::SaveBanner( QByteArray stuff )
     {
         hexdump( stuff, 0, 0x30 );
         f.close();
-        qWarning() << "SaveBanner::SaveBanner -> bad file magic" << hex << qFromBigEndian( magic );
+        qWarning() << "SaveBanner::SaveBanner -> bad file magic" << Qt::hex << qFromBigEndian( magic );
         return;
     }
 
@@ -87,7 +87,7 @@ SaveBanner::SaveBanner( QByteArray stuff )
 		flags += "loop";
 	}
 	flags = flags.leftJustified( 27, QChar( ' ' ) );
-	qDebug() << hex << //QString( "%1" ).arg( tmp, 8, 16, QChar( '0' ) ) <<
+	qDebug() << Qt::hex << //QString( "%1" ).arg( tmp, 8, 16, QChar( '0' ) ) <<
 						//QString( "%1" ).arg( speeds, 4, 16, QChar( '0' ) ) <<
 				speedStr <<
 				flags <<
@@ -135,7 +135,7 @@ SaveBanner::SaveBanner( QByteArray stuff )
     f.close();
     ok = true;
 
-    //qDebug() << hex << QString( "%1 %2").arg( qFromBigEndian( tmp ), 9, 16).arg( qFromBigEndian( tmp2 ), 9, 16)
+    //qDebug() << Qt::hex << QString( "%1 %2").arg( qFromBigEndian( tmp ), 9, 16).arg( qFromBigEndian( tmp2 ), 9, 16)
     //<< saveTitle.leftJustified( 0x20 ) << QString( "icons: %1").arg( iconImgs.size(), 1, 16 ) << QString( "banner size: %1" ).arg( size, 4, 16 );
 
 }
@@ -152,7 +152,7 @@ SaveBanner::SaveBanner( const QString &bannerPath )
     quint32 size = f.size();
     if( size < 0x72a0 || ( ( size - 0x60a0 ) % 0x1200 )  )//sanity check the size.  must have enough data for the header, names, banner, and 1 icon image
     {
-        qDebug() << "SaveBanner::SaveBanner -> bad filesize" << hex << size;
+        qDebug() << "SaveBanner::SaveBanner -> bad filesize" << Qt::hex << size;
         f.close();
         return;
     }
@@ -232,7 +232,7 @@ SaveBanner::SaveBanner( const QString &bannerPath )
 
 QImage SaveBanner::ConvertTextureToImage( const QByteArray &ba, quint32 w, quint32 h )
 {
-    //qDebug() << "SaveBanner::ConvertTextureToImage" << ba.size() << hex << w << h;
+    //qDebug() << "SaveBanner::ConvertTextureToImage" << ba.size() << Qt::hex << w << h;
     quint8* bitmapdata = NULL;//this will hold the converted image
     int ret = ConvertRGB5A3ToBitMap( (quint8*)ba.constData(), &bitmapdata, w, h );
     if( !ret )

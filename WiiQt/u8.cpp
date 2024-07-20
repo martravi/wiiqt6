@@ -163,10 +163,10 @@ bool U8::RenameEntry( const QString &path, const QString &newName )
     else if( RU( nFstSize, U8_HEADER_ALIGNMENT ) > RU( fstSize, U8_HEADER_ALIGNMENT ) )
         dataAdjustment = RU( ( nFstSize - fstSize ), U8_HEADER_ALIGNMENT );
 
-    qDebug() << "old size:" << hex << oldNameLen\
-            << "new size:" << hex << newNameLen\
-            << "difference:" << hex << difference
-            << "dataAdjustment:" << hex << dataAdjustment;
+    qDebug() << "old size:" << Qt::hex << oldNameLen\
+            << "new size:" << Qt::hex << newNameLen\
+            << "difference:" << Qt::hex << difference
+            << "dataAdjustment:" << Qt::hex << dataAdjustment;
     QByteArray nFstData( ( qFromBigEndian( fst[ 0 ].FileLength ) ) * 0xc, '\0' );
     FEntry *nfst = (FEntry*)( nFstData.data() );
     //make the new root entry
@@ -210,7 +210,7 @@ bool U8::RenameEntry( const QString &path, const QString &newName )
             ne->FileOffset = qFromBigEndian( qFromBigEndian( e->FileOffset ) + dataAdjustment );// + qFromBigEndian( dataAdjustment );
             //qFromBigEndian( (quint32)( 0x20 + RU( U8_HEADER_ALIGNMENT, nFstSize ) + nPayload.size() ) );
             ne->FileLength = e->FileLength;
-            qDebug() << "old offset" << hex << qFromBigEndian( e->FileOffset ) << "new offset" << hex << qFromBigEndian( e->FileOffset ) + dataAdjustment;
+            qDebug() << "old offset" << Qt::hex << qFromBigEndian( e->FileOffset ) << "new offset" << Qt::hex << qFromBigEndian( e->FileOffset ) + dataAdjustment;
         }
 
     }
@@ -313,9 +313,9 @@ bool U8::ReplaceEntry( const QString &path, const QByteArray &nba, bool autoComp
     }
 
 
-    /*qDebug() << "old size:" << hex << oldSizePadded\
-        << "new size:" << hex << newSizePadded\
-        << "difference:" << hex << difference;*/
+    /*qDebug() << "old size:" << Qt::hex << oldSizePadded\
+        << "new size:" << Qt::hex << newSizePadded\
+        << "difference:" << Qt::hex << difference;*/
     QByteArray newData = nba;
     if( autoCompress )
     {
@@ -363,7 +363,7 @@ bool U8::ReplaceEntry( const QString &path, const QByteArray &nba, bool autoComp
         if( e->Type )//nothing changes for directories
             continue;
 
-        //qDebug() << "changed" << FstName( e ) << "offset from" << hex << qFromBigEndian( fst[ i ].FileOffset ) << "to" << qFromBigEndian( fst[ i ].FileOffset ) + difference;
+        //qDebug() << "changed" << FstName( e ) << "offset from" << Qt::hex << qFromBigEndian( fst[ i ].FileOffset ) << "to" << qFromBigEndian( fst[ i ].FileOffset ) + difference;
         e->FileOffset = qFromBigEndian( qFromBigEndian( fst[ i ].FileOffset ) + difference );
     }
     CreateEntryList();
@@ -482,7 +482,7 @@ bool U8::RemoveEntry( const QString &path )
         quint8 adj = i < (quint32)entryToDelete ? 0 : numDeletedEntries;
         quint32 ni = i - adj;
 
-        //qDebug() << "keeping" << FstName( i ) << "in the new archive ( moved from" << hex << i << "to" << hex << ni << ")";
+        //qDebug() << "keeping" << FstName( i ) << "in the new archive ( moved from" << Qt::hex << i << "to" << Qt::hex << ni << ")";
         //if( parents.contains( i ) )
         //qDebug() << "\tthis is a parent of the deleted item";
 
@@ -513,7 +513,7 @@ bool U8::RemoveEntry( const QString &path )
 
                 movedDirs << i;
 
-                //qDebug() << "e.parent:" << hex << qFromBigEndian( e->ParentOffset ) << "movedDirs:" << movedDirs;
+                //qDebug() << "e.parent:" << Qt::hex << qFromBigEndian( e->ParentOffset ) << "movedDirs:" << movedDirs;
                 //hexdump( (const void*)ne, sizeof( FEntry) );
             }
         }
@@ -529,7 +529,7 @@ bool U8::RemoveEntry( const QString &path )
             {
                 nPayload.append( QByteArray( padding, '\0' ) );
             }
-            //qDebug() << "writing fileOffset of" << hex << ni << hex << (quint32)( 0x20 + RU( U8_HEADER_ALIGNMENT, nFstSize ) + nPayload.size() );
+            //qDebug() << "writing fileOffset of" << Qt::hex << ni << Qt::hex << (quint32)( 0x20 + RU( U8_HEADER_ALIGNMENT, nFstSize ) + nPayload.size() );
         }
         //hexdump( (const void*)ne, sizeof( FEntry) );
 
@@ -585,7 +585,7 @@ bool U8::RemoveEntry( const QString &path )
     CreateEntryList();
 
     //hexdump( data );
-    //qDebug() << "dataSize after removal:" << hex << data.size();
+    //qDebug() << "dataSize after removal:" << Qt::hex << data.size();
 
     return true;
 
@@ -593,7 +593,7 @@ bool U8::RemoveEntry( const QString &path )
 
 int U8::AddEntry( const QString &path, int type, const QByteArray &newData )
 {
-    //qDebug() << "U8::AddEntry(" << path << "," << type << "," << hex << newData.size() << ")";
+    //qDebug() << "U8::AddEntry(" << path << "," << type << "," << Qt::hex << newData.size() << ")";
     //make sure there is actually data to manipulate
     if( !ok && !CreateEmptyData() )
     {
@@ -848,7 +848,7 @@ void U8::CreateEntryList()
     NameOff = cnt * 0x0C;
     bool fixWarn = false;//ony print the warning 1 time
 
-    //qDebug() << "cnt" << hex << cnt;
+    //qDebug() << "cnt" << Qt::hex << cnt;
     for( quint32 i = 1; i < cnt; ++i )//this is not the most effecient way to do things, but it seems to work ok and these archives are small enough that it happens fast anyways
     {
         //start at the beginning of the fst and enter every directory whos "nextoffset" is greater than this index,
@@ -872,7 +872,7 @@ void U8::CreateEntryList()
                     if( folder != qFromBigEndian( fst[ current ].ParentOffset ) )
                     {
                         qWarning() << "U8::CreateEntryList -> error parsing the archive - recursion mismatch in"
-                                << path << "expected:" << hex << folder << "got:" << hex << qFromBigEndian( fst[ current ].ParentOffset )\
+                                << path << "expected:" << Qt::hex << folder << "got:" << Qt::hex << qFromBigEndian( fst[ current ].ParentOffset )\
                                 << "(" << FstName( qFromBigEndian( fst[ current ].ParentOffset ) ) << ")";
 
                         //some tools use "recursion" instead of "parent offset".
@@ -938,7 +938,7 @@ void U8::CreateEntryList()
 U8::U8( const QByteArray &ba )
 {
     wii_cs_error = false;
-    //qDebug() << "U8::U8 dataSize:" << hex << ba.size();
+    //qDebug() << "U8::U8 dataSize:" << Qt::hex << ba.size();
     Load( ba );
 }
 
@@ -953,7 +953,7 @@ void U8::Load( const QByteArray &ba )
     imetNames.clear();
     /*if( ba.size() < 0x80 )
     {
-    //qWarning() << "U8::Load:" << hex << ba.size();
+    //qWarning() << "U8::Load:" << Qt::hex << ba.size();
     //qWarning() << "U8::Load -> where is the rest of the data?";
     return;
     }*/
@@ -1016,8 +1016,8 @@ void U8::Load( const QByteArray &ba )
     rootnode_offset = qFromBigEndian( tmp );
     if( rootnode_offset != 0x20 )
     {
-        qWarning() << "rootnodeOffset" << hex << rootnode_offset;
-        qWarning() << hex << data.size();
+        qWarning() << "rootnodeOffset" << Qt::hex << rootnode_offset;
+        qWarning() << Qt::hex << data.size();
         hexdump( data );
     }
 
@@ -1064,9 +1064,9 @@ QString U8::FstName( quint32 i )
 
 quint32 U8::NextEntryInFolder( quint32 current, quint32 directory )
 {
-    //qDebug() << "U8::NextEntryInFolder(" << hex << current << "," << hex << directory << ")";
+    //qDebug() << "U8::NextEntryInFolder(" << Qt::hex << current << "," << Qt::hex << directory << ")";
     quint32 next = ( fst[ current ].Type ? qFromBigEndian( fst[ current ].FileLength ) : current + 1 );
-    //qDebug() << "next" << next << "len" << hex << qFromBigEndian( fst[ directory ].FileLength );
+    //qDebug() << "next" << next << "len" << Qt::hex << qFromBigEndian( fst[ directory ].FileLength );
     if( next < qFromBigEndian( fst[ directory ].FileLength ) )
         return next;
 
@@ -1269,7 +1269,7 @@ typedef struct
 
 void U8::ReadHeader( const QByteArray &ba )
 {
-    //qDebug() << "U8::ReadHeader(" << hex << ba.size() << ")";
+    //qDebug() << "U8::ReadHeader(" << Qt::hex << ba.size() << ")";
     //hexdump( ba );
     headerType = U8_Hdr_none;
     imetNames.clear();
@@ -1288,7 +1288,7 @@ void U8::ReadHeader( const QByteArray &ba )
         return;
     }
     int off = start.indexOf( "IMET" );
-    //qDebug() << "imet offset" << hex << off << "u8 offset" << hex << GetU8Offset( ba );
+    //qDebug() << "imet offset" << Qt::hex << off << "u8 offset" << Qt::hex << GetU8Offset( ba );
     if( off == 0x40 || off == 0x80 )//read imet header
     {
         if( off > GetU8Offset( ba ) )//in case somebody wants to put a IMET archive inside another U8 for whatever reason

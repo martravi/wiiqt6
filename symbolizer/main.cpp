@@ -60,7 +60,7 @@ QList< KnownVariable > knownVariables;
 // keep a list of the locations that each function's pattern matched to keep from looking them up over and over
 QMap< const ElfParser::Function *, QList< quint32 > >patternMatches;
 
-#define DU32( x ) qDebug().nospace() << #x << ": " << hex << (x)
+#define DU32( x ) qDebug().nospace() << #x << ": " << Qt::hex << (x)
 
 QString NStr( quint32 num, quint8 width = 8 );
 QString NStr( quint32 num, quint8 width )
@@ -321,7 +321,7 @@ void AddFunctionToKnownList( const ElfParser::Function *function, const ElfParse
 		{
 			if( kf.addr != addr )
 			{
-				DBG << "tried to add" << function->Name() << "to known functions at" << hex << addr << "but it already exists at" << kf.addr;
+				DBG << "tried to add" << function->Name() << "to known functions at" << Qt::hex << addr << "but it already exists at" << kf.addr;
 				// TODO, probably need to remove the existing function from the list
 			}
 			return;
@@ -341,7 +341,7 @@ void AddFunctionToKnownList( const QString &name, quint32 addr, const QString &d
 		{
 			if( kf.addr != addr )
 			{
-				DBG << "tried to add" << name << "to known functions at" << hex << addr << "but it already exists at" << kf.addr;
+				DBG << "tried to add" << name << "to known functions at" << Qt::hex << addr << "but it already exists at" << kf.addr;
 				// TODO, probably need to remove the existing function from the list
 			}
 			return;
@@ -375,7 +375,7 @@ int PatternSearch( const QString &needle, const QString &haystack, qint64 start 
 			}
 			if( c != haystack.at( start + j ) )
 			{
-				//DBG << "index" << hex << (quint32)j;
+				//DBG << "index" << Qt::hex << (quint32)j;
 				break;
 			}
 		}
@@ -738,13 +738,13 @@ void TryToMatchData()
 			continue;
 		}
 		knownData << kd;
-		/*qDebug() << hex << kd.addr << kd.len << kd.name << "from" << kd.file->Name();
+		/*qDebug() << Qt::hex << kd.addr << kd.len << kd.name << "from" << kd.file->Name();
   // print aliases
   foreach( const SymAlias &alias, kd.file->Aliases() )
   {
    if( alias.containerName == kd.name )
    {
- qDebug() << hex << "  " << ( kd.addr + alias.offset ) << alias.size << alias.name;
+ qDebug() << Qt::hex << "  " << ( kd.addr + alias.offset ) << alias.size << alias.name;
    }
   }*/
 	}
@@ -793,10 +793,10 @@ void TryToMatchFunctions0()
 		const QPair< const ElfParser::Function *, quint32>&p = maybeMatches.at( i );
 		if( dupAddrs.contains( p.second ) )
 		{
-			//qDebug() << "tossing out" << p.first->Name() << "because addr" << hex << p.second << "is reused";
+			//qDebug() << "tossing out" << p.first->Name() << "because addr" << Qt::hex << p.second << "is reused";
 			continue;
 		}
-		//qDebug() << hex << p.second << NStr( p.first->Pattern().size() / 2, 4 ) << p.first->Name();
+		//qDebug() << Qt::hex << p.second << NStr( p.first->Pattern().size() / 2, 4 ) << p.first->Name();
 		AddFunctionToKnownList( p.first, fileMap.find( p.first ).value(), p.second, __FUNCTION__ );
 	}
 	RemoveOverlaps();
@@ -899,7 +899,7 @@ void TryToMatchFunctions1()
 		const QList< quint32 > &addrs = PatternMatches( it.first );
 		foreach( quint32 addr, addrs )
 		{
-			//qDebug() << "using address" << hex << addr << "for" << it.first->Name();
+			//qDebug() << "using address" << Qt::hex << addr << "for" << it.first->Name();
 			foreach( const SymRef &ref, it.first->References() )
 			{
 				switch( ref.type )
@@ -958,8 +958,8 @@ void TryToMatchFunctions1()
 					{
 						fail = true;
 
-						//qDebug() << "bad high" << hex <<  opcode << refOff << ref.name << ref.symOff;
-						//qDebug() << hex << "expected" << (quint32)( ( ( it.second->addr + ref.symOff + aliasDiff ) & 0xffff0000 ) >> 16 );
+						//qDebug() << "bad high" << Qt::hex <<  opcode << refOff << ref.name << ref.symOff;
+						//qDebug() << Qt::hex << "expected" << (quint32)( ( ( it.second->addr + ref.symOff + aliasDiff ) & 0xffff0000 ) >> 16 );
 						//DumpRefs( *( it.first ) );
 					}
 				}
@@ -970,8 +970,8 @@ void TryToMatchFunctions1()
 					if( ( opcode & 0xffff ) != upper )
 					{
 						fail = true;
-						//qDebug() << "bad high" << hex <<  opcode << refOff << ref.name << ref.symOff;
-						//qDebug() << hex << "expected" << (quint32)( ( ( it.second->addr + ref.symOff + aliasDiff ) & 0xffff0000 ) >> 16 );
+						//qDebug() << "bad high" << Qt::hex <<  opcode << refOff << ref.name << ref.symOff;
+						//qDebug() << Qt::hex << "expected" << (quint32)( ( ( it.second->addr + ref.symOff + aliasDiff ) & 0xffff0000 ) >> 16 );
 						//DumpRefs( *( it.first ) );
 					}
 				}
@@ -981,8 +981,8 @@ void TryToMatchFunctions1()
 					if( ( opcode & 0xffff ) != ( (it.second->addr + ref.symOff + aliasDiff ) & 0xffff ) )
 					{
 						fail = true;
-						//qDebug() << "bad low" << hex <<  opcode << refOff << ref.name << ref.symOff;
-						//qDebug() << hex << "expected" << (quint32)( ( (it.second->addr + ref.symOff + aliasDiff ) & 0xffff ) );
+						//qDebug() << "bad low" << Qt::hex <<  opcode << refOff << ref.name << ref.symOff;
+						//qDebug() << Qt::hex << "expected" << (quint32)( ( (it.second->addr + ref.symOff + aliasDiff ) & 0xffff ) );
 						//DumpRefs( *( it.first ) );
 					}
 				}
@@ -993,7 +993,7 @@ void TryToMatchFunctions1()
 					if( !AddressIsInDol( res ) )// just make sure the branch is inside the dol for now.  no functions are actually known
 					{
 						fail = true;
-						//qDebug() << "bad dranch" << hex << res << opcode << it.second->addr << ref.name;
+						//qDebug() << "bad dranch" << Qt::hex << res << opcode << it.second->addr << ref.name;
 					}
 				}
 				break;
@@ -1001,7 +1001,7 @@ void TryToMatchFunctions1()
 					continue;
 					break;
 				}
-				//qDebug() << "fakematch" << hex << addr << it.first->Name();
+				//qDebug() << "fakematch" << Qt::hex << addr << it.first->Name();
 
 				// if we found a possible match and we dont already have this one
 				if( !fail && !ListContains( probablyMatches, it.first, addr ) )
@@ -1021,7 +1021,7 @@ void TryToMatchFunctions1()
 	for( int i = 0; i < s; i++ )
 	{
 		const QPair< const ElfParser::Function *, quint32 > &p = probablyMatches.at( i );
-		//qDebug() << hex << p.second << NStr( p.first->Pattern().size() / 2, 4 ) << p.first->Name();
+		//qDebug() << Qt::hex << p.second << NStr( p.first->Pattern().size() / 2, 4 ) << p.first->Name();
 		AddFunctionToKnownList( p.first, fileMap.find( p.first ).value(), p.second, __FUNCTION__ );
 	}
 	RemoveOverlaps();
@@ -1053,13 +1053,13 @@ void FindGlobalVariables()
 			quint32 opcode = GetOpcodeFromAddr( addr );
 			if( opcode == 0xdeadbeef )
 			{
-				DBG << "opcode" << hex << opcode;
+				DBG << "opcode" << Qt::hex << opcode;
 				continue;
 			}
 			quint32 reg = (quint32)PPCGETA( opcode );
 			if( reg != 2 && reg != 13 )
 			{
-				DBG << "reg:" << hex << reg << kf1.function->Name() << ref.name;
+				DBG << "reg:" << Qt::hex << reg << kf1.function->Name() << ref.name;
 				continue;
 			}
 			quint32 sig = GLOBALVAR_MASK( opcode );
@@ -1073,7 +1073,7 @@ void FindGlobalVariables()
 			nw.sig = sig;
 			newVariables << nw;
 
-			/*qDebug() << "opcode" << hex << opcode << "addr" << addr;
+			/*qDebug() << "opcode" << Qt::hex << opcode << "addr" << addr;
    qDebug() << kf1.function->Name() << ref.name;
    qDebug();
    quint32 z = GLOBALVAR_MASK( opcode );
@@ -1155,7 +1155,7 @@ void FindGlobalVariables()
 				quint32 opcode = GetOpcodeFromAddr( opAddr );
 				if( opcode == 0xdeadbeef )
 				{
-					DBG << "opcode" << hex << opcode;
+					DBG << "opcode" << Qt::hex << opcode;
 					continue;
 				}
 				if( GLOBALVAR_MASK( opcode ) != varSig )
@@ -1188,7 +1188,7 @@ void FindGlobalVariables()
 	while( ret.hasNext() )
 	{
 		ret.next();
-		//qDebug() << hex << ret.value()
+		//qDebug() << Qt::hex << ret.value()
 		//		 << NStr( ret.key()->Pattern().size() / 2, 4 )
 		//		 << ret.key()->Name()
 		//		 << fileMap.find( ret.key() ).value()->Name();
@@ -1263,7 +1263,7 @@ void TryToMatchFunctions2( QMap< const ElfParser::Function *, quint32 > &nonMatc
 			quint32 opcode = GetOpcodeFromAddr( addr );
 			if( opcode == 0xdeadbeef )
 			{
-				DBG << "error getting opcode from" << hex << addr << fun->Name();
+				DBG << "error getting opcode from" << Qt::hex << addr << fun->Name();
 				break;
 			}
 			quint32 res = ResolveBranch( addr , opcode );
@@ -1273,7 +1273,7 @@ void TryToMatchFunctions2( QMap< const ElfParser::Function *, quint32 > &nonMatc
 			{
 				break;
 			}
-			//qDebug() << hex << res << ref.name << "from" << kf.addr << fun->Name() << addr << opcode;
+			//qDebug() << Qt::hex << res << ref.name << "from" << kf.addr << fun->Name() << addr << opcode;
 
 			bool branchHasSymbols = false;
 			bool skipIt = false;
@@ -1304,16 +1304,16 @@ void TryToMatchFunctions2( QMap< const ElfParser::Function *, quint32 > &nonMatc
 						{
 							/*if( fun2.Name() == "NANDPrivateCreateAsync" )
 	{
-  qDebug() << "expected" << fun2.Name() << "at" << hex << res << "but pattern didnt match";
-  qDebug() << "being called from" << fun->Name() << "at" << hex << addr;
+  qDebug() << "expected" << fun2.Name() << "at" << Qt::hex << res << "but pattern didnt match";
+  qDebug() << "being called from" << fun->Name() << "at" << Qt::hex << addr;
   qDebug() << "offset" << NStr( textOffset ) << "in section" << dolIdx;
   qDebug() << fun2.Pattern();
   qDebug() << wholeDolHex.at( dolIdx ).mid( textOffset, fun2.Pattern().size() );
   exit( 0 );
 
 	}*/
-							//qDebug() << "expected" << fun2.Name() << "at" << hex << res << "but pattern didnt match";
-							//qDebug() << "being called from" << fun->Name() << "at" << hex << addr;
+							//qDebug() << "expected" << fun2.Name() << "at" << Qt::hex << res << "but pattern didnt match";
+							//qDebug() << "being called from" << fun->Name() << "at" << Qt::hex << addr;
 							nonMatchingBranches[ &fun2 ] = res;
 						}
 						break;
@@ -1342,7 +1342,7 @@ void TryToMatchFunctions2( QMap< const ElfParser::Function *, quint32 > &nonMatc
 	for( int i = 0; i < s; i++ )
 	{
 		const QPair< const ElfParser::Function *, quint32 > &p = probablyMatches.at( i );
-		//qDebug() << hex << p.second << p.first->Name();
+		//qDebug() << Qt::hex << p.second << p.first->Name();
 		AddFunctionToKnownList( p.first, fileMap.find( p.first ).value(), p.second, __FUNCTION__ );
 	}
 
@@ -1352,7 +1352,7 @@ void TryToMatchFunctions2( QMap< const ElfParser::Function *, quint32 > &nonMatc
 	for( int i = 0; i < s; i++ )
 	{
 		const QPair< QString, quint32 > &p = probablyMatches2.at( i );
-		//qDebug() << hex << p.second << p.first;
+		//qDebug() << Qt::hex << p.second << p.first;
 		AddFunctionToKnownList( p.first, p.second, __FUNCTION__ );
 	}
 	RemoveOverlaps();
@@ -1424,7 +1424,7 @@ QList< QPair< const ElfParser::Function *, quint32> > TryToMatchFunctions3( QLis
 					quint32 opcode = GetOpcodeFromAddr( branchFromAddr );
 					if( opcode == 0xdeadbeef )
 					{
-						DBG << "error getting opcode from" << hex << branchFromAddr << fun.Name() << "ref" << ref.name;
+						DBG << "error getting opcode from" << Qt::hex << branchFromAddr << fun.Name() << "ref" << ref.name;
 						fail = true;
 						break;
 					}
@@ -1465,7 +1465,7 @@ QList< QPair< const ElfParser::Function *, quint32> > TryToMatchFunctions3( QLis
 	for( int i = 0; i < s; i++ )
 	{
 		const QPair< const ElfParser::Function *, quint32 > &p = maybeMatches.at( i );
-		//qDebug() << hex << p.second << NStr( p.first->Pattern().size() / 2, 4 ) << p.first->Name();
+		//qDebug() << Qt::hex << p.second << NStr( p.first->Pattern().size() / 2, 4 ) << p.first->Name();
 
 		AddFunctionToKnownList( p.first, fileMap.find( p.first ).value(), p.second, __FUNCTION__ );
 	}
@@ -1534,11 +1534,11 @@ QList< QPair< const ElfParser::Function *, quint32> > TryToMatchFunctions4( QLis
 	// cleanup the list
 	CleanupList( maybeMatches );
 	int s = maybeMatches.size();
-	//qDebug() << "Functions that only have 1 pattern match, contain wildcards, and are larger than 0x" << hex << minLen << "bytes:";
+	//qDebug() << "Functions that only have 1 pattern match, contain wildcards, and are larger than 0x" << Qt::hex << minLen << "bytes:";
 	for( int i = 0; i < s; i++ )
 	{
 		const QPair< const ElfParser::Function *, quint32 > &p = maybeMatches.at( i );
-		//qDebug() << hex << p.second << NStr( p.first->Pattern().size() / 2, 4 ) << p.first->Name();
+		//qDebug() << Qt::hex << p.second << NStr( p.first->Pattern().size() / 2, 4 ) << p.first->Name();
 
 		AddFunctionToKnownList( p.first, fileMap.find( p.first ).value(), p.second, __FUNCTION__ );
 	}

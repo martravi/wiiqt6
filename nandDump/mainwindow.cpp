@@ -493,7 +493,7 @@ void MainWindow::SaveJobToFolder( NusJob job )
         if( job.decrypt )
         {
             appName += ".app";
-            //qDebug() << "resizing from" << hex << stuff.size() << "to" << (quint32)t.Size( i );
+            //qDebug() << "resizing from" << Qt::hex << stuff.size() << "to" << (quint32)t.Size( i );
             //stuff.resize( t.Size( i ) );
         }
         if( !WriteFile( d.absoluteFilePath( appName ), stuff ) )

@@ -5,7 +5,7 @@ KeysBin::KeysBin( QByteArray stuff )
     data = stuff;
     if( data.size() && data.size() != 0x400 )
     {
-        qWarning() << "KeysBin::KeysBin -> bad size" << hex << data.size();
+        qWarning() << "KeysBin::KeysBin -> bad size" << Qt::hex << data.size();
     }
 }
 
