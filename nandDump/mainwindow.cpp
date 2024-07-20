@@ -13,11 +13,11 @@ MainWindow::MainWindow( QWidget *parent ) : QMainWindow( parent ), ui( new Ui::M
 
     //resize buttons to be same size
     QFontMetrics fm( fontMetrics() );
-    int max = fm.width( ui->pushButton_CachePathBrowse->text() );
-    max = MAX( max, fm.width( ui->pushButton_decFolder->text() ) );
-    max = MAX( max, fm.width( ui->pushButton_GetTitle->text() ) );
-    max = MAX( max, fm.width( ui->pushButton_nandPath->text() ) );
-    max = MAX( max, fm.width( ui->pushButton_wad->text() ) );
+    int max = fm.horizontalAdvance( ui->pushButton_CachePathBrowse->text() );
+    max = MAX( max, fm.horizontalAdvance( ui->pushButton_decFolder->text() ) );
+    max = MAX( max, fm.horizontalAdvance( ui->pushButton_GetTitle->text() ) );
+    max = MAX( max, fm.horizontalAdvance( ui->pushButton_nandPath->text() ) );
+    max = MAX( max, fm.horizontalAdvance( ui->pushButton_wad->text() ) );
 
     max += 15;
     ui->pushButton_CachePathBrowse->setMinimumWidth( max );

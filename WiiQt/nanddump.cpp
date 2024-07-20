@@ -661,11 +661,11 @@ void NandDump::ReadReplacementStrings()
     if( ba.isEmpty() )
         return;
 
-    QRegExp re( "[^/?*:;{}\\]+" );
+    QRegularExpression re( "[^/?*:;{}\\]+" );
 
     QString all( ba );
     all.replace( "\r\n", "\n" );
-    QStringList lines = QString( ba ).split( "\n", QString::SkipEmptyParts );
+    QStringList lines = QString( ba ).split( "\n", Qt::SkipEmptyParts );
     foreach( QString line, lines )
     {
         //skip lines that are less than 3 characters on dont have a space as their second character or have characters not allowed on FAT32
@@ -682,7 +682,7 @@ void NandDump::ReadReplacementStrings()
 bool NandDump::SetReplaceString( const QString &ch, const QString &replaceWith )
 {
     qWarning() << "NandDump::SetReplaceString(" << ch << "," << replaceWith << ")";
-    QRegExp re( "[^/?*:;{}\\]+" );
+    QRegularExpression re( "[^/?*:;{}\\]+" );
     if( replaceWith.contains( re ) )
     {
         qWarning() << "NandDump::SetReplaceString -> replacement string contains illegal characters";
@@ -802,7 +802,7 @@ const QString NandDump::FromNandName( const QString &name )
 const QString NandDump::ToNandPath( const QString &path )
 {
     QString ret;
-    QStringList parts = path.split( "/", QString::SkipEmptyParts );
+    QStringList parts = path.split( "/", Qt::SkipEmptyParts );
     foreach( QString part, parts )
         ret += "/" + ToNandName( part );
 
@@ -812,7 +812,7 @@ const QString NandDump::ToNandPath( const QString &path )
 const QString NandDump::FromNandPath( const QString &path )
 {
     QString ret;
-    QStringList parts = path.split( "/", QString::SkipEmptyParts );
+    QStringList parts = path.split( "/", Qt::SkipEmptyParts );
     foreach( QString part, parts )
         ret += "/" + FromNandName( part );
 
