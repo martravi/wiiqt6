@@ -101,7 +101,7 @@ private:
 	// takes each file and separetes it into functions
 	bool ParseFileText( const QStringList &strs, const QStringList &sectionStrs, const QStringList &symbolStrs, File &file );
 
-	QRegExp funcStart;
+	QRegularExpression funcStart;
 	bool IsFunctionStart( const QString &str, quint32 *start = NULL );
 
 	// extract function name from the line that starts it

@@ -14,7 +14,7 @@ bool ElfParser::ParseText( const QString &str )
 	QMap< QString, QStringList >rawFiles;
 	QMap< QString, QStringList >rawSections;
 	QMap< QString, QStringList >rawSymbolTable;
-	QStringList lines = str.split( '\n', QString::KeepEmptyParts );
+    QStringList lines = str.split( '\n', Qt::KeepEmptyParts );
 	quint32 lineCnt = lines.size();
 	for( quint32 i = 0; i < lineCnt; i++ )
 	{
@@ -388,7 +388,7 @@ bool ElfParser::ParseFileText( const QStringList &strs, const QStringList &secti
 			{
 				qDebug() << "ref.off is busted 1" << name << str;
 
-				qDebug() << ::hex << refOff << fStart;
+                qDebug() << Qt::hex << refOff << fStart;
 				exit( 0 );
 			}
 		}

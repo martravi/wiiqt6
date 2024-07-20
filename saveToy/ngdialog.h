@@ -25,7 +25,7 @@ public:
 private:
     Ui::NgDialog *ui;
 
-    QRegExp hex;
+    QRegularExpression hex;
 
     bool ValidNGID();
     bool ValidNGKeyID();
